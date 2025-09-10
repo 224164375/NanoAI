@@ -1,0 +1,121 @@
+workflows:
+  android-build:
+    name: Android Build
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    integrations:
+      app_store_connect: NanoAI
+    environment:
+      android_signing:
+        - NanoAI_Keystore
+      groups:
+        - flutter
+      vars:
+        FLUTTER_VERSION: "3.16.0"
+        JAVA_HOME: /System/Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home
+    cache:
+      cache_paths:
+        - $FLUTTER_ROOT/.pub-cache
+        - $HOME/.gradle/caches
+    triggering:
+      events:
+        - push
+        - tag
+        - pull_request
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+          source: true
+    scripts:
+      - name: Set up Flutter
+        script: |
+          flutter channel stable
+          flutter upgrade
+          flutter --version
+      - name: Install dependencies
+        script: |
+          flutter pub get
+      - name: Flutter analyze
+        script: |
+          flutter analyze
+      - name: Flutter test
+        script: |
+          flutter test
+      - name: Build APK
+        script: |
+          flutter build apk --release
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
+      - build/app/outputs/bundle/**/*.aab
+    publishing:
+      email:
+        recipients:
+          - nanoai@example.com
+        notify:
+          success: true
+          failure: true
+
+  ios-build:
+    name: iOS Build
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    integrations:
+      app_store_connect: NanoAI
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.nanoai.flutter
+      groups:
+        - flutter
+      vars:
+        FLUTTER_VERSION: "3.16.0"
+    cache:
+      cache_paths:
+        - $FLUTTER_ROOT/.pub-cache
+        - $HOME/Library/Caches/CocoaPods
+    triggering:
+      events:
+        - push
+        - tag
+        - pull_request
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+          source: true
+    scripts:
+      - name: Set up Flutter
+        script: |
+          flutter channel stable
+          flutter upgrade
+          flutter --version
+      - name: Install dependencies
+        script: |
+          flutter pub get
+      - name: Install CocoaPods
+        script: |
+          cd ios && pod install
+      - name: Flutter analyze
+        script: |
+          flutter analyze
+      - name: Flutter test
+        script: |
+          flutter test
+      - name: Build iOS
+        script: |
+          flutter build ios --release --no-codesign
+      - name: Build IPA
+        script: |
+          flutter build ipa --release
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/ios/Runner.app
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+      email:
+        recipients:
+          - nanoai@example.com
+        notify:
+          success: true
+          failure: true

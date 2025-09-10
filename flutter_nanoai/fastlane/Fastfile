@@ -1,0 +1,35 @@
+default_platform(:android)
+
+platform :android do
+  desc "Build Android APK"
+  lane :build do
+    # Install Flutter dependencies
+    sh("flutter pub get")
+    
+    # Build APK
+    sh("flutter build apk --release")
+  end
+
+  desc "Build Android App Bundle"
+  lane :bundle do
+    # Install Flutter dependencies
+    sh("flutter pub get")
+    
+    # Build App Bundle
+    sh("flutter build appbundle --release")
+  end
+end
+
+platform :ios do
+  desc "Build iOS app"
+  lane :build do
+    # Install Flutter dependencies
+    sh("flutter pub get")
+    
+    # Install CocoaPods dependencies
+    cocoapods(podfile: "ios/Podfile")
+    
+    # Build iOS
+    sh("flutter build ios --release --no-codesign")
+  end
+end
