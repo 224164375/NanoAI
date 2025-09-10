@@ -16,8 +16,6 @@ import 'presentation/screens/home_screen.dart';
 import 'presentation/screens/chat_screen.dart';
 import 'presentation/screens/settings_screen.dart';
 import 'presentation/providers/app_state_provider.dart';
-import 'presentation/providers/character_provider.dart';
-import 'presentation/providers/voice_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

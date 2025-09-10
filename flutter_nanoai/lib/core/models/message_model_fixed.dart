@@ -45,7 +45,7 @@ class MessageModel {
         orElse: () => MessageType.text,
       ),
       metadata: json['metadata'] != null 
-          ? Map<String, dynamic>.from(json['metadata'])
+          ? Map<String, dynamic>.from(json['metadata'] as Map)
           : null,
     );
   }
@@ -101,23 +101,16 @@ class MessageModel {
 enum MessageType {
   @HiveField(0)
   text,
-  
   @HiveField(1)
   voice,
-  
   @HiveField(2)
   image,
-  
   @HiveField(3)
   system,
-  
-  @HiveField(4)
-  error,
 }
 
-// Conversation model for grouping messages
 @HiveType(typeId: 2)
-class ConversationModel extends HiveObject {
+class ConversationModel {
   @HiveField(0)
   final String id;
 
@@ -125,13 +118,13 @@ class ConversationModel extends HiveObject {
   final String title;
 
   @HiveField(2)
-  final DateTime createdAt;
+  final String characterId;
 
   @HiveField(3)
-  final DateTime updatedAt;
+  final DateTime createdAt;
 
   @HiveField(4)
-  final String characterId;
+  final DateTime updatedAt;
 
   @HiveField(5)
   final List<String> messageIds;
@@ -139,26 +132,26 @@ class ConversationModel extends HiveObject {
   @HiveField(6)
   final Map<String, dynamic>? metadata;
 
-  ConversationModel({
+  const ConversationModel({
     required this.id,
     required this.title,
+    required this.characterId,
     required this.createdAt,
     required this.updatedAt,
-    required this.characterId,
     required this.messageIds,
     this.metadata,
   });
 
   factory ConversationModel.fromJson(Map<String, dynamic> json) {
     return ConversationModel(
-      id: json['id'] ?? '',
-      title: json['title'] ?? '',
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-      characterId: json['characterId'] ?? '',
-      messageIds: List<String>.from(json['messageIds'] ?? []),
+      id: json['id'] as String,
+      title: json['title'] as String,
+      characterId: json['characterId'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      messageIds: List<String>.from(json['messageIds'] as List),
       metadata: json['metadata'] != null 
-          ? Map<String, dynamic>.from(json['metadata'])
+          ? Map<String, dynamic>.from(json['metadata'] as Map)
           : null,
     );
   }
@@ -167,9 +160,9 @@ class ConversationModel extends HiveObject {
     return {
       'id': id,
       'title': title,
+      'characterId': characterId,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
-      'characterId': characterId,
       'messageIds': messageIds,
       'metadata': metadata,
     };
@@ -178,18 +171,18 @@ class ConversationModel extends HiveObject {
   ConversationModel copyWith({
     String? id,
     String? title,
+    String? characterId,
     DateTime? createdAt,
     DateTime? updatedAt,
-    String? characterId,
     List<String>? messageIds,
     Map<String, dynamic>? metadata,
   }) {
     return ConversationModel(
       id: id ?? this.id,
       title: title ?? this.title,
+      characterId: characterId ?? this.characterId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      characterId: characterId ?? this.characterId,
       messageIds: messageIds ?? this.messageIds,
       metadata: metadata ?? this.metadata,
     );
