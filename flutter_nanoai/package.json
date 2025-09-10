@@ -1,0 +1,37 @@
+{
+  "name": "nanoai-flutter",
+  "version": "1.0.0",
+  "description": "NanoAI Smart Assistant - Complete Flutter rebuild with AI characters, voice interaction, and Arabic support",
+  "main": "index.js",
+  "scripts": {
+    "build": "flutter build web --release",
+    "build:android": "flutter build apk --release",
+    "build:ios": "flutter build ios --release",
+    "dev": "flutter run -d chrome",
+    "clean": "flutter clean && flutter pub get",
+    "analyze": "flutter analyze",
+    "test": "flutter test",
+    "format": "dart format .",
+    "ionic:build": "npm run build",
+    "ionic:serve": "flutter run -d web-server --web-port=8100"
+  },
+  "keywords": [
+    "flutter",
+    "ai",
+    "assistant",
+    "arabic",
+    "voice",
+    "chat",
+    "mobile"
+  ],
+  "author": "NanoAI Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@capacitor/cli": "^5.5.1"
+  },
+  "dependencies": {
+    "@capacitor/android": "^5.5.1",
+    "@capacitor/core": "^5.5.1",
+    "@capacitor/ios": "^5.5.1"
+  }
+}

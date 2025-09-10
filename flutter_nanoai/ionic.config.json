@@ -1,0 +1,8 @@
+{
+  "name": "NanoAI Flutter",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom",
+  "id": "nanoai-flutter"
+}
